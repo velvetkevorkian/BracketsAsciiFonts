@@ -6,6 +6,7 @@ maxerr: 50, node: true */
     "use strict";
     
     var os = require("os");
+        //ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
         //figlet= require("/node_modules/figlet");
         
     
@@ -14,7 +15,8 @@ maxerr: 50, node: true */
     }
     
     function cmdConvertText(){
-        return {output: "text converted"};
+        //var figPath =  ExtensionUtils.getModulePath(module, "node_modules/figlet");
+        return {output: "fuck"};
     }
     
     
