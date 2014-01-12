@@ -8,7 +8,7 @@ define(function (require, exports, module) {
     var AppInit        = brackets.getModule("utils/AppInit"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        figlet = require("./node/node_modules/figlet/lib/figlet"),
+//        figlet = require("./node/node_modules/figlet/lib/figlet"),
         NodeConnection = brackets.getModule("utils/NodeConnection");
 
     function chain() {
@@ -60,16 +60,13 @@ define(function (require, exports, module) {
         }
         
         function convertText() {
-            var figPath = ExtensionUtils.getModulePath(module, "node/node_modules/figlet");
-            var figletText = figlet
-            console.log(figPath);
             var textPromise = nodeConnection.domains.simple.convertText();
             textPromise.fail(function (err) {
                 console.error("[brackets-simple-node] failed to get text", err);
             });
             textPromise.done(function (text) {
                 console.log(
-                    text.output
+                    "kjkj"//text.output
                 );
             });
             return textPromise;
