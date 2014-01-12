@@ -9,7 +9,7 @@ define(function (require, exports, module) {
         ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         NodeConnection = brackets.getModule("utils/NodeConnection");
-//        figlet = require("node/node_modules/figlet");
+
 
     // Helper function that chains a series of promise-returning
     // functions together via their done callbacks.
@@ -75,6 +75,8 @@ define(function (require, exports, module) {
         }
         
         function convertText() {
+            var figPath = ExtensionUtils.getModulePath(module, "node/node_modules/figlet");
+            console.log(figPath);
             var textPromise = nodeConnection.domains.simple.convertText();
             textPromise.fail(function (err) {
                 console.error("[brackets-simple-node] failed to get text", err);
