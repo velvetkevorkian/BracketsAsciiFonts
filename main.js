@@ -8,7 +8,6 @@ define(function (require, exports, module) {
     var AppInit        = brackets.getModule("utils/AppInit"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-//        figlet = require("./node/node_modules/figlet/lib/figlet"),
         NodeConnection = brackets.getModule("utils/NodeConnection");
 
     function chain() {
@@ -43,21 +42,6 @@ define(function (require, exports, module) {
             return loadPromise;
         }
         
-        function logMemory() {
-            var memoryPromise = nodeConnection.domains.simple.getMemory();
-            memoryPromise.fail(function (err) {
-                console.error("[brackets-simple-node] failed to run simple.getMemory", err);
-            });
-            memoryPromise.done(function (memory) {
-                console.log(
-                    "[brackets-simple-node] Memory: %d of %d bytes free (%d%)",
-                    memory.free,
-                    memory.total,
-                    Math.floor(memory.free * 100 / memory.total)
-                );
-            });
-            return memoryPromise;
-        }
         
         function convertText() {
             var textPromise = nodeConnection.domains.simple.convertText();
@@ -66,13 +50,13 @@ define(function (require, exports, module) {
             });
             textPromise.done(function (text) {
                 console.log(
-                    "kjkj"//text.output
+                    //text.output
                 );
             });
             return textPromise;
         }
 
-        chain(connect, loadSimpleDomain, logMemory, convertText);
+        chain(connect, loadSimpleDomain, convertText);
         
     });
 
