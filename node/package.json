@@ -1,0 +1,8 @@
+{
+ "name": "ASCIIFontsII",
+ "description": "The Thing's Name",
+ "author": "The Dude <the.dude@dudethinking.com>",
+ "dependencies": {
+      "figlet":">= 1.0.8"
+ }
+}
