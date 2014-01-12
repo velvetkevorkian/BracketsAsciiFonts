@@ -11,9 +11,6 @@ define(function (require, exports, module) {
         figlet = require("./node/node_modules/figlet/lib/figlet"),
         NodeConnection = brackets.getModule("utils/NodeConnection");
 
-
-    // Helper function that chains a series of promise-returning
-    // functions together via their done callbacks.
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
         if (functions.length > 0) {
@@ -27,18 +24,8 @@ define(function (require, exports, module) {
 
     
     AppInit.appReady(function () {
-        // Create a new node connection. Requires the following extension:
-        // https://github.com/joelrbrandt/brackets-node-client
         var nodeConnection = new NodeConnection();
         
-        // Every step of communicating with node is asynchronous, and is
-        // handled through jQuery promises. To make things simple, we
-        // construct a series of helper functions and then chain their
-        // done handlers together. Each helper function registers a fail
-        // handler with its promise to report any errors along the way.
-        
-        
-        // Helper function to connect to node
         function connect() {
             var connectionPromise = nodeConnection.connect(true);
             connectionPromise.fail(function () {
@@ -47,7 +34,6 @@ define(function (require, exports, module) {
             return connectionPromise;
         }
         
-        // Helper function that loads our domain into the node server
         function loadSimpleDomain() {
             var path = ExtensionUtils.getModulePath(module, "node/SimpleDomain");
             var loadPromise = nodeConnection.loadDomains([path], true);
@@ -57,8 +43,6 @@ define(function (require, exports, module) {
             return loadPromise;
         }
         
-        // Helper function that runs the simple.getMemory command and
-        // logs the result to the console
         function logMemory() {
             var memoryPromise = nodeConnection.domains.simple.getMemory();
             memoryPromise.fail(function (err) {
@@ -91,7 +75,6 @@ define(function (require, exports, module) {
             return textPromise;
         }
 
-        // Call all the helper functions in order
         chain(connect, loadSimpleDomain, logMemory, convertText);
         
     });
