@@ -8,8 +8,8 @@ define(function (require, exports, module) {
     var AppInit        = brackets.getModule("utils/AppInit"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        NodeConnection = brackets.getModule("utils/NodeConnection"),
-        figlet = require("node/node_modules/figlet");
+        NodeConnection = brackets.getModule("utils/NodeConnection");
+//        figlet = require("node/node_modules/figlet");
 
     // Helper function that chains a series of promise-returning
     // functions together via their done callbacks.
@@ -73,9 +73,22 @@ define(function (require, exports, module) {
             });
             return memoryPromise;
         }
+        
+        function convertText() {
+            var textPromise = nodeConnection.domains.simple.convertText();
+            textPromise.fail(function (err) {
+                console.error("[brackets-simple-node] failed to get text", err);
+            });
+            textPromise.done(function (text) {
+                console.log(
+                    text.output
+                );
+            });
+            return textPromise;
+        }
 
         // Call all the helper functions in order
-        chain(connect, loadSimpleDomain, logMemory);
+        chain(connect, loadSimpleDomain, logMemory, convertText);
         
     });
 

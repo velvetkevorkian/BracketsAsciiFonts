@@ -13,6 +13,10 @@ maxerr: 50, node: true */
         return {total: os.totalmem(), free: os.freemem()};
     }
     
+    function cmdConvertText(){
+        return {output: "text converted"};
+    }
+    
     
     function init(DomainManager) {
         if (!DomainManager.hasDomain("simple")) {
@@ -28,6 +32,18 @@ maxerr: 50, node: true */
             [{name: "memory",
                 type: "{total: number, free: number}",
                 description: "amount of total and free memory in bytes"}]
+        );
+        
+        DomainManager.registerCommand(
+            "simple",       // domain name
+            "convertText",    // command name
+            cmdConvertText,   // command handler function
+            false,          // this command is synchronous
+            "Returns the total and free memory on the user's system in bytes",
+            [],             // no parameters
+            [{name: "memory",
+                type: "{output: text}",
+                description: "some text"}]
         );
     }
     
