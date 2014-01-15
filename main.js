@@ -44,6 +44,18 @@ define(function (require, exports, module) {
     function convertText() {
         var editor = EditorManager.getCurrentFullEditor();
         var input = editor.getSelectedText();
+        var start, end, cursorPosition;
+        cursorPosition = editor.getCursorPos();
+        start = {
+            line: cursorPosition.line,
+            ch: cursorPosition.ch - input.length
+        };
+        console.log(start);
+//        end = {
+//            line: editor.document.getLine(cursorPosition.line),
+//            ch: cursorPosition.ch
+//        };
+        
         if (input.length > 0) {
             var textPromise = nodeConnection.domains.simple.convertText(input, font);
             textPromise.fail(function (err) {
@@ -51,6 +63,7 @@ define(function (require, exports, module) {
             });
             textPromise.done(function (text) {
                 console.log(text);
+                editor.document.replaceRange(text, start, cursorPosition);
             });
             return textPromise;
         } else {
