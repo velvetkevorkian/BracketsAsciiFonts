@@ -18,7 +18,7 @@ define(function (require, exports, module) {
         //input,
         nodeConnection;
     
-    var ui = $('<div><h1>Figlet</h1><select id="fontSelect"></select></div>');
+    var ui = $('<div id="figletPanel"><h1>Figlet</h1><select id="fontSelect"></select><button id="go">Go</button></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -36,14 +36,14 @@ define(function (require, exports, module) {
 
     function getFontList() {
         var fontsPromise = nodeConnection.domains.simple.getFontList();
+        var i = 0;
         fontsPromise.fail(function (err) {
             console.error("[ASCII Art] failed to get font list", err);
         });
         fontsPromise.done(function (fontList) {
-//            console.dir(fontList);
-            for (var i = 0; i<fontList.length; i++){
+            for (i = 0; i < fontList.length; i++) {
                 $('#fontSelect').append($('<option value=' + fontList[i] + '>' + fontList[i] + '</option>'));
-            }   
+            }
             
         });
         return fontsPromise;
@@ -60,7 +60,6 @@ define(function (require, exports, module) {
             line: cursorPosition.line,
             ch: cursorPosition.ch - input.length
         };
-        console.log(start);
         
         if (input.length > 0) {
             var textPromise = nodeConnection.domains.simple.convertText(input, font);
@@ -110,10 +109,16 @@ define(function (require, exports, module) {
     function figletUI() {
         var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 200);
         getFontList();
+        $("#fontSelect").change(function () {
+            font = $(this).text();
+        });
+        $("#go").click(convertText());
         figletUIPanel.show();
         
     }
 
+
+test
 
 
 });
