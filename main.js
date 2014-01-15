@@ -8,7 +8,9 @@ define(function (require, exports, module) {
     var AppInit        = brackets.getModule("utils/AppInit"),
         ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        NodeConnection = brackets.getModule("utils/NodeConnection");
+        NodeConnection = brackets.getModule("utils/NodeConnection"),
+        font = "graffiti",
+        input = "Faster Disco";
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -44,7 +46,8 @@ define(function (require, exports, module) {
         
         
         function convertText() {
-            var textPromise = nodeConnection.domains.simple.convertText();
+            //r input = "Hello bitches";
+            var textPromise = nodeConnection.domains.simple.convertText(input, font);
             textPromise.fail(function (err) {
                 console.error("[ASCII Art] failed to get text", err);
             });

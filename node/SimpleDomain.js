@@ -8,9 +8,9 @@ maxerr: 50, node: true */
     var os = require("os");
     var figlet = require("./node_modules/figlet/lib/node-figlet");
 
-    function cmdConvertText(cb) {
-        figlet.text('\nVictory', {
-            font: 'Graffiti',
+    function cmdConvertText(input, font, cb) {
+        figlet.text(input, {
+            font: font,
             horizontalLayout: 'default',
             verticalLayout: 'default'
         }, function (err, data) {
@@ -20,7 +20,7 @@ maxerr: 50, node: true */
                 //return "uh oh";
                 cb(err.message, null);
             }
-            console.log(data);
+            console.log("\n" + data);
             cb(null, data);
         });
     }
