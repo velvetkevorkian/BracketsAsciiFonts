@@ -44,6 +44,18 @@ define(function (require, exports, module) {
             return loadPromise;
         }
         
+        function getFontList() {
+            var fontsPromise = nodeConnection.domains.simple.getFontList();
+            fontsPromise.fail(function (err) {
+                console.error("[ASCII Art] failed to get font list", err);
+            });
+            fontsPromise.done(function (fontList) {
+                console.dir(fontList);
+            });
+            return fontsPromise;
+        }
+                        
+        
         
         function convertText() {
             //r input = "Hello bitches";
@@ -59,7 +71,7 @@ define(function (require, exports, module) {
             return textPromise;
         }
 
-        chain(connect, loadSimpleDomain, convertText);
+        chain(connect, loadSimpleDomain, getFontList, convertText);
         
     });
 

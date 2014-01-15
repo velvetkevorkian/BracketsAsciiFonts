@@ -15,16 +15,24 @@ maxerr: 50, node: true */
             verticalLayout: 'default'
         }, function (err, data) {
             if (err) {
-                //console.log('Something went wrong...');
-                //console.dir(err);
-                //return "uh oh";
                 cb(err.message, null);
             }
             console.log("\n" + data);
             cb(null, data);
         });
     }
-    
+
+    function cmdGetFontList(cb) {
+        figlet.fonts(function (err, fonts) {
+            if (err) {
+                cb(err.message, null);
+            }
+            console.dir(fonts);
+            cb(null, fonts);
+        });
+    }
+
+
     function init(DomainManager) {
         if (!DomainManager.hasDomain("simple")) {
             DomainManager.registerDomain("simple", {
@@ -32,7 +40,7 @@ maxerr: 50, node: true */
                 minor: 1
             });
         }
-       
+
         DomainManager.registerCommand(
             "simple", // domain name
             "convertText", // command name
@@ -43,6 +51,19 @@ maxerr: 50, node: true */
                 name: "convertText",
                 type: "{string}",
                 description: " "
+            }]
+        );
+        
+        DomainManager.registerCommand(
+            "simple",
+            "getFontList",
+            cmdGetFontList,
+            true,
+            "gets the list of available fonts", [],
+            [{
+                name: "getFontList",
+                type: "object",
+                description: ""
             }]
         );
     }
