@@ -10,10 +10,11 @@ define(function (require, exports, module) {
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         NodeConnection = brackets.getModule("utils/NodeConnection"),
         CommandManager = brackets.getModule("command/CommandManager"),
+        EditorManager = brackets.getModule("editor/EditorManager"),
         Menus = brackets.getModule("command/Menus"),
         FIGLET_CMD_ID = "fig.convert",
         font = "graffiti",
-        input = "Faster Disco", 
+        //input,
         nodeConnection;
 
     function chain() {
@@ -41,15 +42,14 @@ define(function (require, exports, module) {
 
 
     function convertText() {
-        //r input = "Hello bitches";
+        var editor = EditorManager.getCurrentFullEditor();
+        var input = editor.getSelectedText();
         var textPromise = nodeConnection.domains.simple.convertText(input, font);
         textPromise.fail(function (err) {
             console.error("[ASCII Art] failed to get text", err);
         });
         textPromise.done(function (text) {
-            console.log(
-                text
-            );
+            console.log(text);
         });
         return textPromise;
     }
