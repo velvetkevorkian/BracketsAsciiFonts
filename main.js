@@ -18,7 +18,7 @@ define(function (require, exports, module) {
         //input,
         nodeConnection;
     
-    var ui = $("<div><h1>Figlet</h1></div>");
+    var ui = $('<div><h1>Figlet</h1><select id="fontSelect"></select></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -31,11 +31,7 @@ define(function (require, exports, module) {
         }
     }
     
-    function figletUI() {
-        var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 200);
-        figletUIPanel.show();
-        
-    }
+    
     
 
     function getFontList() {
@@ -44,7 +40,11 @@ define(function (require, exports, module) {
             console.error("[ASCII Art] failed to get font list", err);
         });
         fontsPromise.done(function (fontList) {
-            console.dir(fontList);
+//            console.dir(fontList);
+            for (var i = 0; i<fontList.length; i++){
+                $('#fontSelect').append($('<option value=' + fontList[i] + '>' + fontList[i] + '</option>'));
+            }   
+            
         });
         return fontsPromise;
     }
@@ -106,6 +106,13 @@ define(function (require, exports, module) {
         editMenu.addMenuItem(FIGLET_CMD_ID);
 
     });
+    
+    function figletUI() {
+        var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 200);
+        getFontList();
+        figletUIPanel.show();
+        
+    }
 
 
 
