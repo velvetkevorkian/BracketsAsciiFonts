@@ -8,18 +8,20 @@ maxerr: 50, node: true */
     var os = require("os");
     var figlet = require("./node_modules/figlet/lib/node-figlet");
 
-    function cmdConvertText() {
+    function cmdConvertText(cb) {
         figlet.text('\nVictory', {
             font: 'Graffiti',
             horizontalLayout: 'default',
             verticalLayout: 'default'
         }, function (err, data) {
             if (err) {
-                console.log('Something went wrong...');
-                console.dir(err);
-                return "uh oh";
+                //console.log('Something went wrong...');
+                //console.dir(err);
+                //return "uh oh";
+                cb(err.message, null);
             }
             console.log(data);
+            cb(null, data);
         });
     }
     
@@ -35,11 +37,11 @@ maxerr: 50, node: true */
             "simple", // domain name
             "convertText", // command name
             cmdConvertText, // command handler function
-            false, // this command is synchronous
+            true, // this command is asynchronous
             "prints the word victory to the node console", [], // no parameters
             [{
                 name: "convertText",
-                type: "{}",
+                type: "{string}",
                 description: " "
             }]
         );

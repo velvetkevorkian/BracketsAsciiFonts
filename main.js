@@ -28,7 +28,7 @@ define(function (require, exports, module) {
         function connect() {
             var connectionPromise = nodeConnection.connect(true);
             connectionPromise.fail(function () {
-                console.error("[brackets-simple-node] failed to connect to node");
+                console.error("[ASCII Art] failed to connect to node");
             });
             return connectionPromise;
         }
@@ -37,7 +37,7 @@ define(function (require, exports, module) {
             var path = ExtensionUtils.getModulePath(module, "node/SimpleDomain");
             var loadPromise = nodeConnection.loadDomains([path], true);
             loadPromise.fail(function () {
-                console.log("[brackets-simple-node] failed to load domain");
+                console.log("[ASCII Art] failed to load domain");
             });
             return loadPromise;
         }
@@ -46,11 +46,11 @@ define(function (require, exports, module) {
         function convertText() {
             var textPromise = nodeConnection.domains.simple.convertText();
             textPromise.fail(function (err) {
-                console.error("[brackets-simple-node] failed to get text", err);
+                console.error("[ASCII Art] failed to get text", err);
             });
             textPromise.done(function (text) {
                 console.log(
-                    //text.output
+                    text
                 );
             });
             return textPromise;
