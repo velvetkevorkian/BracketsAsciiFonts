@@ -44,14 +44,18 @@ define(function (require, exports, module) {
     function convertText() {
         var editor = EditorManager.getCurrentFullEditor();
         var input = editor.getSelectedText();
-        var textPromise = nodeConnection.domains.simple.convertText(input, font);
-        textPromise.fail(function (err) {
-            console.error("[ASCII Art] failed to get text", err);
-        });
-        textPromise.done(function (text) {
-            console.log(text);
-        });
-        return textPromise;
+        if (input.length > 0) {
+            var textPromise = nodeConnection.domains.simple.convertText(input, font);
+            textPromise.fail(function (err) {
+                console.error("[ASCII Art] failed to get text", err);
+            });
+            textPromise.done(function (text) {
+                console.log(text);
+            });
+            return textPromise;
+        } else {
+            alert("No text selected.");
+        }
     }
 
 
