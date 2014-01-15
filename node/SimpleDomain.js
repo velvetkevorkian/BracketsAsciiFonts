@@ -45,26 +45,14 @@ maxerr: 50, node: true */
             "simple", // domain name
             "convertText", // command name
             cmdConvertText, // command handler function
-            true, // this command is asynchronous
-            "prints the word victory to the node console", [], // no parameters
-            [{
-                name: "convertText",
-                type: "{string}",
-                description: " "
-            }]
+            true // this command is asynchronous
         );
         
         DomainManager.registerCommand(
             "simple",
             "getFontList",
             cmdGetFontList,
-            true,
-            "gets the list of available fonts", [],
-            [{
-                name: "getFontList",
-                type: "object",
-                description: ""
-            }]
+            true
         );
     }
 
