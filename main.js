@@ -63,7 +63,7 @@ define(function (require, exports, module) {
             });
             textPromise.done(function (text) {
                 console.log(text);
-                editor.document.replaceRange(text, start, cursorPosition);
+                editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
             });
             return textPromise;
         } else {
