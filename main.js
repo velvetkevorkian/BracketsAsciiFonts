@@ -5,12 +5,16 @@ maxerr: 50, browser: true */
 define(function (require, exports, module) {
     "use strict";
 
-    var AppInit        = brackets.getModule("utils/AppInit"),
-        ProjectManager = brackets.getModule("project/ProjectManager"),
+    var AppInit = brackets.getModule("utils/AppInit"),
+        //ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         NodeConnection = brackets.getModule("utils/NodeConnection"),
+        CommandManager = brackets.getModule("command/CommandManager"),
+        Menus = brackets.getModule("command/Menus"),
+        FIGLET_CMD_ID = "fig.convert",
         font = "graffiti",
-        input = "Faster Disco";
+        input = "Faster Disco", 
+        nodeConnection;
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -23,10 +27,37 @@ define(function (require, exports, module) {
         }
     }
 
-    
+    function getFontList() {
+        var fontsPromise = nodeConnection.domains.simple.getFontList();
+        fontsPromise.fail(function (err) {
+            console.error("[ASCII Art] failed to get font list", err);
+        });
+        fontsPromise.done(function (fontList) {
+            console.dir(fontList);
+        });
+        return fontsPromise;
+    }
+
+
+
+    function convertText() {
+        //r input = "Hello bitches";
+        var textPromise = nodeConnection.domains.simple.convertText(input, font);
+        textPromise.fail(function (err) {
+            console.error("[ASCII Art] failed to get text", err);
+        });
+        textPromise.done(function (text) {
+            console.log(
+                text
+            );
+        });
+        return textPromise;
+    }
+
+
     AppInit.appReady(function () {
-        var nodeConnection = new NodeConnection();
-        
+        nodeConnection = new NodeConnection();
+
         function connect() {
             var connectionPromise = nodeConnection.connect(true);
             connectionPromise.fail(function () {
@@ -34,7 +65,7 @@ define(function (require, exports, module) {
             });
             return connectionPromise;
         }
-        
+
         function loadSimpleDomain() {
             var path = ExtensionUtils.getModulePath(module, "node/SimpleDomain");
             var loadPromise = nodeConnection.loadDomains([path], true);
@@ -43,36 +74,16 @@ define(function (require, exports, module) {
             });
             return loadPromise;
         }
-        
-        function getFontList() {
-            var fontsPromise = nodeConnection.domains.simple.getFontList();
-            fontsPromise.fail(function (err) {
-                console.error("[ASCII Art] failed to get font list", err);
-            });
-            fontsPromise.done(function (fontList) {
-                console.dir(fontList);
-            });
-            return fontsPromise;
-        }
-                        
-        
-        
-        function convertText() {
-            //r input = "Hello bitches";
-            var textPromise = nodeConnection.domains.simple.convertText(input, font);
-            textPromise.fail(function (err) {
-                console.error("[ASCII Art] failed to get text", err);
-            });
-            textPromise.done(function (text) {
-                console.log(
-                    text
-                );
-            });
-            return textPromise;
-        }
 
-        chain(connect, loadSimpleDomain, getFontList, convertText);
-        
+        chain(connect, loadSimpleDomain);
+
+        var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+
+        CommandManager.register("Convert to ASCII Art", FIGLET_CMD_ID, convertText);
+        editMenu.addMenuItem(FIGLET_CMD_ID);
+
     });
+
+
 
 });
