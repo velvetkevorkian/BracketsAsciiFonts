@@ -17,7 +17,6 @@ maxerr: 50, node: true */
             if (err) {
                 cb(err.message, null);
             }
-            console.log("\n" + data);
             cb(null, data);
         });
     }
@@ -27,7 +26,6 @@ maxerr: 50, node: true */
             if (err) {
                 cb(err.message, null);
             }
-            console.dir(fonts);
             cb(null, fonts);
         });
     }
