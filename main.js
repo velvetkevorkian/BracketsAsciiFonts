@@ -12,10 +12,13 @@ define(function (require, exports, module) {
         CommandManager = brackets.getModule("command/CommandManager"),
         EditorManager = brackets.getModule("editor/EditorManager"),
         Menus = brackets.getModule("command/Menus"),
+        PanelManager = brackets.getModule("view/PanelManager"),
         FIGLET_CMD_ID = "fig.convert",
         font = "graffiti",
         //input,
         nodeConnection;
+    
+    var ui = $("<div><h1>Figlet</h1></div>");
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -27,6 +30,13 @@ define(function (require, exports, module) {
             });
         }
     }
+    
+    function figletUI() {
+        var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 200);
+        figletUIPanel.show();
+        
+    }
+    
 
     function getFontList() {
         var fontsPromise = nodeConnection.domains.simple.getFontList();
@@ -39,7 +49,7 @@ define(function (require, exports, module) {
         return fontsPromise;
     }
 
-
+    
 
     function convertText() {
         var editor = EditorManager.getCurrentFullEditor();
@@ -51,10 +61,6 @@ define(function (require, exports, module) {
             ch: cursorPosition.ch - input.length
         };
         console.log(start);
-//        end = {
-//            line: editor.document.getLine(cursorPosition.line),
-//            ch: cursorPosition.ch
-//        };
         
         if (input.length > 0) {
             var textPromise = nodeConnection.domains.simple.convertText(input, font);
@@ -96,7 +102,7 @@ define(function (require, exports, module) {
 
         var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
 
-        CommandManager.register("Convert to ASCII Art", FIGLET_CMD_ID, convertText);
+        CommandManager.register("Convert to ASCII Art", FIGLET_CMD_ID, figletUI);
         editMenu.addMenuItem(FIGLET_CMD_ID);
 
     });
