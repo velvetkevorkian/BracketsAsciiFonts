@@ -14,7 +14,7 @@ define(function (require, exports, module) {
         Menus = brackets.getModule("command/Menus"),
         PanelManager = brackets.getModule("view/PanelManager"),
         FIGLET_CMD_ID = "fig.convert",
-        font = "graffiti",
+        font, // = "graffiti",
         //input,
         nodeConnection;
     
@@ -42,7 +42,7 @@ define(function (require, exports, module) {
         });
         fontsPromise.done(function (fontList) {
             for (i = 0; i < fontList.length; i++) {
-                $('#fontSelect').append($('<option value=' + fontList[i] + '>' + fontList[i] + '</option>'));
+                $('#fontSelect').append($('<option value="' + fontList[i] + '">' + fontList[i] + '</option>'));
             }
             
         });
@@ -110,15 +110,17 @@ define(function (require, exports, module) {
         var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 200);
         getFontList();
         $("#fontSelect").change(function () {
-            font = $(this).text();
+            font = $(this).find(":selected").text();
+            console.log(font);
         });
-        $("#go").click(convertText());
+        $("#go").click(function () {
+            convertText();
+        });
         figletUIPanel.show();
         
     }
 
 
-test
 
 
 });
