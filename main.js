@@ -13,10 +13,11 @@ define(function (require, exports, module) {
         Menus = brackets.getModule("command/Menus"),
         PanelManager = brackets.getModule("view/PanelManager"),
         FIGLET_CMD_ID = "fig.convert",
-        font, 
+        font,
+        output,
         nodeConnection;
     
-    var ui = $('<div id="figletPanel"><h1>Figlet</h1><select id="fontSelect"></select><button id="go">Go</button></div>');
+    var ui = $('<div id="figletPanel"><h1>Figlet</h1><select id="fontSelect"></select><button id="go">Go</button><p id="figletPreview"><pre>Preview</pre></p></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -49,7 +50,7 @@ define(function (require, exports, module) {
 
     
 
-    function convertText() {
+    function convertText(preview) {
         var editor = EditorManager.getCurrentFullEditor();
         var input = editor.getSelectedText();
         var start, end, cursorPosition;
@@ -65,14 +66,16 @@ define(function (require, exports, module) {
                 console.error("[ASCII Art] failed to get text", err);
             });
             textPromise.done(function (text) {
-                editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
+                output = text;
+                if (preview) {
+                    $("#figletPreview").html('<pre><br>' + output + '<br></pre>');
+                } else {
+                    editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
+                }
             });
             return textPromise;
-        } else {
-            alert("No text selected.");
         }
     }
-
 
     AppInit.appReady(function () {
         nodeConnection = new NodeConnection();
@@ -104,13 +107,14 @@ define(function (require, exports, module) {
     });
     
     function figletUI() {
-        var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 200);
+        var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 400);
         getFontList();
         $("#fontSelect").change(function () {
             font = $(this).find(":selected").text();
+            convertText(true); //preview true
         });
         $("#go").click(function () {
-            convertText();
+            convertText(false); //preview false
         });
         figletUIPanel.show();
         
