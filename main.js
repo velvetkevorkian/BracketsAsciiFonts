@@ -6,7 +6,6 @@ define(function (require, exports, module) {
     "use strict";
 
     var AppInit = brackets.getModule("utils/AppInit"),
-        //ProjectManager = brackets.getModule("project/ProjectManager"),
         ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
         NodeConnection = brackets.getModule("utils/NodeConnection"),
         CommandManager = brackets.getModule("command/CommandManager"),
@@ -14,8 +13,7 @@ define(function (require, exports, module) {
         Menus = brackets.getModule("command/Menus"),
         PanelManager = brackets.getModule("view/PanelManager"),
         FIGLET_CMD_ID = "fig.convert",
-        font, // = "graffiti",
-        //input,
+        font, 
         nodeConnection;
     
     var ui = $('<div id="figletPanel"><h1>Figlet</h1><select id="fontSelect"></select><button id="go">Go</button></div>');
@@ -67,7 +65,6 @@ define(function (require, exports, module) {
                 console.error("[ASCII Art] failed to get text", err);
             });
             textPromise.done(function (text) {
-                console.log(text);
                 editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
             });
             return textPromise;
@@ -111,7 +108,6 @@ define(function (require, exports, module) {
         getFontList();
         $("#fontSelect").change(function () {
             font = $(this).find(":selected").text();
-            console.log(font);
         });
         $("#go").click(function () {
             convertText();
