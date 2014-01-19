@@ -12,11 +12,11 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         Menus = brackets.getModule("command/Menus"),
         PanelManager = brackets.getModule("view/PanelManager"),
-        ASCIIART_CMD_ID = "fig.convert",
+        ASCIIART_CMD_ID = "asciiArt.convert",
         font,
         output,
         nodeConnection;
-    
+
     var ui = $('<div id="asciiArtPanel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
 
     function chain() {
@@ -29,13 +29,13 @@ define(function (require, exports, module) {
             });
         }
     }
-    
-    
-    
-    function noSelectionError(){
+
+
+
+    function noSelectionError() {
         $("#asciiArtPreviewCode").html('No text selected!');
     }
-    
+
 
     function getFontList() {
         var fontsPromise = nodeConnection.domains.simple.getFontList();
@@ -47,12 +47,12 @@ define(function (require, exports, module) {
             for (i = 0; i < fontList.length; i++) {
                 $('#fontSelect').append($('<option value="' + fontList[i] + '">' + fontList[i] + '</option>'));
             }
-            
+
         });
         return fontsPromise;
     }
 
-    
+
 
     function convertText(preview) {
         var editor = EditorManager.getCurrentFullEditor();
@@ -63,7 +63,7 @@ define(function (require, exports, module) {
             line: cursorPosition.line,
             ch: cursorPosition.ch - input.length
         };
-        
+
         if (input.length > 0) {
             var textPromise = nodeConnection.domains.simple.convertText(input, font);
             textPromise.fail(function (err) {
@@ -72,7 +72,7 @@ define(function (require, exports, module) {
             textPromise.done(function (text) {
                 output = text;
                 if (preview) {
-                    $("#previewCode").html('<pre><br>' + output + '<br></pre>');
+                    $("#asciiArtPreviewCode").html('<pre><br>' + output + '<br></pre>');
                 } else {
                     editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
                 }
@@ -83,8 +83,26 @@ define(function (require, exports, module) {
         }
     }
 
+
+
+    function asciiArtUI() {
+        var figletUIPanel = PanelManager.createBottomPanel("asciiArtPanel", ui, 400);
+        getFontList();
+        $("#asciiArtPanel #fontSelect").change(function () {
+            font = $(this).find(":selected").text();
+            convertText(true); //preview true
+        });
+        $("#asciiArtPanel #preview").click(function () {
+            convertText(true);
+        });
+        $("#asciiArtPanel #go").click(function () {
+            convertText(false); //preview false
+        });
+        figletUIPanel.show();
+
+    }
+
     AppInit.appReady(function () {
-        prefs = PreferencesManager.getExtensionPrefs("kmacq.asciiArt");
         nodeConnection = new NodeConnection();
 
         function connect() {
@@ -105,34 +123,12 @@ define(function (require, exports, module) {
         }
 
         chain(connect, loadSimpleDomain);
-        
-        prefs.definePreference("lastFont", "string", "");
-
         var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
 
-        CommandManager.register("Convert to ASCII Art", FIGLET_CMD_ID, figletUI);
-        editMenu.addMenuItem(FIGLET_CMD_ID);
+        CommandManager.register("Convert to ASCII Art", ASCIIART_CMD_ID, asciiArtUI);
+        editMenu.addMenuItem(ASCIIART_CMD_ID);
 
     });
-    
-    function figletUI() {
-        var figletUIPanel = PanelManager.createBottomPanel("figletUI", ui, 400);
-        getFontList();
-        $("#fontSelect").change(function () {
-            font = $(this).find(":selected").text();
-            prefs.set("user", "lastFont", font);
-            prefs.save();
-            convertText(true); //preview true
-        });
-        $("#figletPanel #preview").click(function () {
-            convertText(true);
-        });
-        $("#go").click(function () {
-            convertText(false); //preview false
-        });
-        figletUIPanel.show();
-        
-    }
 
 
 
