@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         output,
         nodeConnection;
 
-    var ui = $('<div id="asciiArtPanel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
+    var ui = $('<div id="asciiArtPanel" class="bottom-panel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><button id="close">Close panel</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -86,7 +86,7 @@ define(function (require, exports, module) {
 
 
     function asciiArtUI() {
-        var figletUIPanel = PanelManager.createBottomPanel("asciiArtPanel", ui, 400);
+        var asciiArtPanel = PanelManager.createBottomPanel("asciiArtPanel", ui, 400);
         getFontList();
         $("#asciiArtPanel #fontSelect").change(function () {
             font = $(this).find(":selected").text();
@@ -98,7 +98,13 @@ define(function (require, exports, module) {
         $("#asciiArtPanel #go").click(function () {
             convertText(false); //preview false
         });
-        figletUIPanel.show();
+        
+        $("#asciiArtPanel #close").click(function () {
+            $("#asciiArtPanel").css("display", "none");
+            EditorManager.resizeEditor();
+            $("#asciiArtPanel .vert-resizer").remove();
+        });
+        asciiArtPanel.show();
 
     }
 
