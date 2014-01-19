@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         output,
         nodeConnection;
 
-    var ui = $('<div id="asciiArtPanel" class="bottom-panel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><button id="close">Close panel</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
+    var ui = $('<div id="asciiArtPanel" class="bottom-panel"><div class="toolbar simple-toolbar-layout mainToolbar"><span>Convert to ASCII Art</span><a href="#" id="close" class="close">&times;</a></div><div style="padding: 15px;"><label for="fontSelect">Select font:</label><select name="fontSelect" id="fontSelect"></select> <button id="preview" class="btn" style="margin: 0 0 9px;">Preview</button> <button id="go" class="btn" style="margin: 0 0 9px;">Go</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview.</pre></p></div></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -72,7 +72,7 @@ define(function (require, exports, module) {
             textPromise.done(function (text) {
                 output = text;
                 if (preview) {
-                    $("#asciiArtPreviewCode").html('<pre><br>' + output + '<br></pre>');
+                    $("#asciiArtPreviewCode").html('<br>' + output + '<br>');
                 } else {
                     editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
                 }
