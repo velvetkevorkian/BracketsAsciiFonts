@@ -17,7 +17,7 @@ define(function (require, exports, module) {
         output,
         nodeConnection;
     
-    var ui = $('<div id="figletPanel"><h1>Figlet</h1><select id="fontSelect"></select><button id="go">Go</button><p id="figletPreview"><pre>Preview</pre></p></div>');
+    var ui = $('<div id="figletPanel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><label>Preview:</label><p id="figletPreview"><pre id="previewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -31,6 +31,11 @@ define(function (require, exports, module) {
     }
     
     
+    
+    function noSelectionError(){
+        //$("#figletPreview").html('<pre><br>No text selected!<br></pre>');
+        $("#previewCode").html('No text selected!');
+    }
     
 
     function getFontList() {
@@ -68,12 +73,14 @@ define(function (require, exports, module) {
             textPromise.done(function (text) {
                 output = text;
                 if (preview) {
-                    $("#figletPreview").html('<pre><br>' + output + '<br></pre>');
+                    $("#previewCode").html('<pre><br>' + output + '<br></pre>');
                 } else {
                     editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
                 }
             });
             return textPromise;
+        } else {
+            noSelectionError();
         }
     }
 
@@ -112,6 +119,9 @@ define(function (require, exports, module) {
         $("#fontSelect").change(function () {
             font = $(this).find(":selected").text();
             convertText(true); //preview true
+        });
+        $("#figletPanel #preview").click(function () {
+            convertText(true);
         });
         $("#go").click(function () {
             convertText(false); //preview false
