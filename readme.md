@@ -23,7 +23,7 @@ Through the Brackets extension manager.
 Edit -> Convert to ASCII Art. I think it should be self explanatory from there. 
 
 ##Known issues
-- The UI is fugly
+- ~~The UI is fugly~~
 - Selections over more than one line behave oddly
 
 ##Missing features
@@ -31,6 +31,7 @@ Edit -> Convert to ASCII Art. I think it should be self explanatory from there.
 - A 'quick use' shortcut for using the same font without opening the panel
 
 ##Release log
+- 0.0.2 : Nicer layout thanks to @larz0
 - 0.0.1 : Initial release (19/01/2014)
 
 ##License
