@@ -12,12 +12,12 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         Menus = brackets.getModule("command/Menus"),
         PanelManager = brackets.getModule("view/PanelManager"),
-        FIGLET_CMD_ID = "fig.convert",
+        ASCIIART_CMD_ID = "fig.convert",
         font,
         output,
         nodeConnection;
     
-    var ui = $('<div id="figletPanel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><label>Preview:</label><p id="figletPreview"><pre id="previewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
+    var ui = $('<div id="asciiArtPanel"><h2>Convert to ASCII art</h2><label for="fontSelect">Select font</label><select name="fontSelect" id="fontSelect"></select><button id="preview">Preview</button><button id="go">Go</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview. </pre></p></div>');
 
     function chain() {
         var functions = Array.prototype.slice.call(arguments, 0);
@@ -33,8 +33,7 @@ define(function (require, exports, module) {
     
     
     function noSelectionError(){
-        //$("#figletPreview").html('<pre><br>No text selected!<br></pre>');
-        $("#previewCode").html('No text selected!');
+        $("#asciiArtPreviewCode").html('No text selected!');
     }
     
 
@@ -85,6 +84,7 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
+        prefs = PreferencesManager.getExtensionPrefs("kmacq.asciiArt");
         nodeConnection = new NodeConnection();
 
         function connect() {
@@ -105,6 +105,8 @@ define(function (require, exports, module) {
         }
 
         chain(connect, loadSimpleDomain);
+        
+        prefs.definePreference("lastFont", "string", "");
 
         var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
 
@@ -118,6 +120,8 @@ define(function (require, exports, module) {
         getFontList();
         $("#fontSelect").change(function () {
             font = $(this).find(":selected").text();
+            prefs.set("user", "lastFont", font);
+            prefs.save();
             convertText(true); //preview true
         });
         $("#figletPanel #preview").click(function () {
