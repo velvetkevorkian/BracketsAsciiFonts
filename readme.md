@@ -19,6 +19,9 @@ with the [wd-minimap extension](https://github.com/websiteduck/brackets-wdminima
 ##Install
 Through the Brackets extension manager.
 
+##Usage
+Edit -> Convert to ASCII Art. I think it should be self explanatory from there. 
+
 ##Known issues
 - The UI is fugly
 - Selections over more than one line behave oddly
