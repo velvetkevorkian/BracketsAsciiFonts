@@ -3,7 +3,7 @@
     "title": "ASCII Art generator",
     "description": "Use cool ASCII fonts to make your code more awesome",
     "homepage": "https://github.com/velvetkevorkian/BracketsAsciiFonts",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "Kyle Macquarrie <kyle@kylemacquarrie.co.uk> (http://kylemacquarrie.co.uk)",
     "license": "MIT",
     "engines": {
