@@ -1,0 +1,12 @@
+{
+    "name": "kmacq.asciiArt",
+    "title": "ASCII Art generator",
+    "description": "Use cool ASCII fonts to make your code more awesome",
+    "homepage": "https://github.com/yourname/yourproject",
+    "version": "0.0.1",
+    "author": "Kyle Macquarrie <kyle@kylemacquarrie.co.uk> (http://kylemacquarrie.co.uk)",
+    "license": "MIT",
+    "engines": {
+        "brackets": ">=0.35.0"
+    }
+}
