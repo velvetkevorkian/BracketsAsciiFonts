@@ -52,6 +52,12 @@ define(function (require, exports, module) {
         return fontsPromise;
     }
 
+    function insertIntoPreview(text) {
+        $("#asciiArtPreviewCode").html('<br>' + text + '<br>');
+    }
+    
+    //function insertIntoEditor() {
+        
 
 
     function convertText(preview) {
@@ -69,13 +75,17 @@ define(function (require, exports, module) {
             textPromise.fail(function (err) {
                 console.error("[ASCII Art] failed to get text", err);
             });
-            textPromise.done(function (text) {
-                output = text;
-                if (preview) {
-                    $("#asciiArtPreviewCode").html('<br>' + output + '<br>');
-                } else {
-                    editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
+            textPromise.done(function (text, cb) {
+                function cb() {
+                    console.log("hello");
+                    return text;
                 }
+//                if (preview) {
+//                    insertIntoPreview(text);
+//                    //$("#asciiArtPreviewCode").html('<br>' + output + '<br>');
+//                } else {
+//                    editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
+//                }
             });
             return textPromise;
         } else {
@@ -90,10 +100,12 @@ define(function (require, exports, module) {
         getFontList();
         $("#asciiArtPanel #fontSelect").change(function () {
             font = $(this).find(":selected").text();
-            convertText(true); //preview true
+            var text = convertText(); //preview true
+            insertIntoPreview(text);
         });
         $("#asciiArtPanel #preview").click(function () {
             convertText(true);
+            insertIntoPreview();
         });
         $("#asciiArtPanel #go").click(function () {
             convertText(false); //preview false
