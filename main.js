@@ -15,7 +15,8 @@ define(function (require, exports, module) {
         ASCIIART_CMD_ID = "asciiArt.convert",
         font,
         output,
-        nodeConnection;
+        nodeConnection,
+        asciiArtPanel;
 
     var ui = $('<div id="asciiArtPanel" class="bottom-panel"><div class="toolbar simple-toolbar-layout mainToolbar"><span>Convert to ASCII Art</span><a href="#" id="close" class="close">&times;</a></div><div style="padding: 15px;"><label for="fontSelect">Select font:</label><select name="fontSelect" id="fontSelect"></select> <button id="preview" class="btn" style="margin: 0 0 9px;">Preview</button> <button id="go" class="btn" style="margin: 0 0 9px;">Go</button><label>Preview:</label><p id="asciiArtPreview"><pre id="asciiArtPreviewCode">Highlight some text, choose a font and press go! Use preview to, er, preview.</pre></p></div></div>');
 
@@ -86,8 +87,12 @@ define(function (require, exports, module) {
 
 
     function asciiArtUI() {
-        var asciiArtPanel = PanelManager.createBottomPanel("asciiArtPanel", ui, 400);
         getFontList();
+        asciiArtPanel.show();
+
+    }
+    
+    function bindEvents() {
         $("#asciiArtPanel #fontSelect").change(function () {
             font = $(this).find(":selected").text();
             convertText(true); //preview true
@@ -97,6 +102,7 @@ define(function (require, exports, module) {
         });
         $("#asciiArtPanel #go").click(function () {
             convertText(false); //preview false
+            console.log('hello!');
         });
         
         $("#asciiArtPanel #close").click(function () {
@@ -104,8 +110,6 @@ define(function (require, exports, module) {
             EditorManager.resizeEditor();
             $("#asciiArtPanel .vert-resizer").remove();
         });
-        asciiArtPanel.show();
-
     }
 
     AppInit.appReady(function () {
@@ -129,10 +133,16 @@ define(function (require, exports, module) {
         }
 
         chain(connect, loadSimpleDomain);
+        asciiArtPanel = PanelManager.createBottomPanel("asciiArtPanel", ui, 400);
+        bindEvents();
         var editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+        
 
         CommandManager.register("Convert to ASCII Art", ASCIIART_CMD_ID, asciiArtUI);
         editMenu.addMenuItem(ASCIIART_CMD_ID);
+        
+       
+        
 
     });
 

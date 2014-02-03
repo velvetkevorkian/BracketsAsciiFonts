@@ -17,6 +17,7 @@ maxerr: 50, node: true */
             if (err) {
                 cb(err.message, null);
             }
+            console.log(data);
             cb(null, data);
         });
     }
