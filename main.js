@@ -60,6 +60,7 @@ define(function (require, exports, module) {
         var input = editor.getSelectedText();
         var start, end, cursorPosition;
         cursorPosition = editor.getCursorPos();
+        
         start = {
             line: cursorPosition.line,
             ch: cursorPosition.ch - input.length
@@ -87,8 +88,11 @@ define(function (require, exports, module) {
 
 
     function asciiArtUI() {
+        var editor = EditorManager.getCurrentFullEditor();
+       
         getFontList();
         asciiArtPanel.show();
+        editor.centerOnCursor();
 
     }
     
@@ -102,11 +106,11 @@ define(function (require, exports, module) {
         });
         $("#asciiArtPanel #go").click(function () {
             convertText(false); //preview false
-            console.log('hello!');
         });
         
         $("#asciiArtPanel #close").click(function () {
             $("#asciiArtPanel").css("display", "none");
+            //asciiArtPanel.hide();
             EditorManager.resizeEditor();
             $("#asciiArtPanel .vert-resizer").remove();
         });
