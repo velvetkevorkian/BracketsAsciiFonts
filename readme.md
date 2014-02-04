@@ -1,5 +1,5 @@
 #ASCII Art for Brackets
-A Brackets extension for using ASCII art for cool lettering, [using patorjk's figlet.js](https://github.com/patorjk/figlet.js). All the good stuff is his; all the dumb mistakes are mine. There probably are some, since this is my first time using node.js for anything. Feel free to file bugs and/or feature requests and I'll see what I can do.  
+A [Brackets](http://brackets.io/) extension for using ASCII art for cool lettering, [using patorjk's `figlet.js`](https://github.com/patorjk/figlet.js). All the good stuff is his; all the dumb mistakes are mine. There probably are some, since this is my first time using node.js for anything. Feel free to file bugs and/or feature requests and I'll see what I can do.  
 
 ##Why?
 
@@ -17,7 +17,7 @@ A Brackets extension for using ASCII art for cool lettering, [using patorjk's fi
 with the [wd-minimap extension](https://github.com/websiteduck/brackets-wdminimap) so you can use this [one weird (John Carmack approved) trick](http://klogk.com/posts/use-ascii-art-in-sublime-text/) for faster code navigation. 
 
 ##Install
-Through the Brackets extension manager. If you want to do it manually, clone or download the repo, `cd node_modules`, then `npm install`.
+Through the Brackets extension manager. If you want to do it manually, clone or download the repo, `cd node_modules`, then `npm install`. That will grab `figlet.js`, and also its dependencies which we don't actually need. 
 
 ##Usage
 Edit -> Convert to ASCII Art. I think it should be self explanatory from there. 
@@ -37,4 +37,3 @@ Edit -> Convert to ASCII Art. I think it should be self explanatory from there.
 
 ##License
 MIT
-
