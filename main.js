@@ -59,12 +59,13 @@ define(function (require, exports, module) {
         var editor = EditorManager.getCurrentFullEditor();
         var input = editor.getSelectedText();
         var start, end, cursorPosition;
-        cursorPosition = editor.getCursorPos();
+        var selection = editor.getSelection();
+        //cursorPosition = editor.getCursorPos();
         
-        start = {
-            line: cursorPosition.line,
-            ch: cursorPosition.ch - input.length
-        };
+//        start = {
+//            line: cursorPosition.line,
+//            ch: cursorPosition.ch - input.length
+//        };
 
         if (input.length > 0) {
             var textPromise = nodeConnection.domains.simple.convertText(input, font);
@@ -76,7 +77,7 @@ define(function (require, exports, module) {
                 if (preview) {
                     $("#asciiArtPreviewCode").html('<br>' + output + '<br>');
                 } else {
-                    editor.document.replaceRange("\n" + text + "\n", start, cursorPosition);
+                    editor.document.replaceRange("\n" + text + "\n", selection.start, selection.end);
                 }
             });
             return textPromise;
