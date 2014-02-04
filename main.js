@@ -89,10 +89,11 @@ define(function (require, exports, module) {
 
     function asciiArtUI() {
         var editor = EditorManager.getCurrentFullEditor();
-       
         getFontList();
         asciiArtPanel.show();
-        editor.centerOnCursor();
+        if (editor.getSelectedText().length > 0) {
+            editor.centerOnCursor();
+        }
 
     }
     
