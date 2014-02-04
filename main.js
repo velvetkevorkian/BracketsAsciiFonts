@@ -56,17 +56,10 @@ define(function (require, exports, module) {
 
 
     function convertText(preview) {
-        var editor = EditorManager.getCurrentFullEditor();
-        var input = editor.getSelectedText();
-        var start, end, cursorPosition;
-        var selection = editor.getSelection();
-        //cursorPosition = editor.getCursorPos();
+        var editor = EditorManager.getCurrentFullEditor(),
+            input = editor.getSelectedText(),
+            selection = editor.getSelection();
         
-//        start = {
-//            line: cursorPosition.line,
-//            ch: cursorPosition.ch - input.length
-//        };
-
         if (input.length > 0) {
             var textPromise = nodeConnection.domains.simple.convertText(input, font);
             textPromise.fail(function (err) {
